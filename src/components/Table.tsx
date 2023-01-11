@@ -1,14 +1,14 @@
 import React from 'react'
+import { useExpense } from '../providers/ExpenseProvider'
+import TableRow from './TableRow'
+
 
 const Table = () => {
+    const {data} = useExpense()
   return (
-    <table className="table-auto">
+    <table className="table-auto text-white w-full text-xs">
   <tbody>
-    <tr>
-      <td>Witchy Woman</td>
-      <td>The Eagles</td>
-      <td>1972</td>
-    </tr>
+  {data.map(expense => <TableRow amount={expense.amount} expense={expense.expense} id={expense.id} />)}
   </tbody>
 </table>
   )
