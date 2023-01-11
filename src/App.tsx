@@ -12,8 +12,6 @@ import Statistics from './containers/Statistics'
 import Homepage from './containers/Homepage'
 
 function App() {
-  const [count, setCount] = useState(0)
-  const test = useExpense()
   return (
     <Routes>
       <Route path='/' element={<Root />}>

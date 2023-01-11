@@ -8,7 +8,7 @@ const Table = () => {
   return (
     <table className="table-auto text-white w-full text-xs">
   <tbody>
-  {data.map(expense => <TableRow amount={expense.amount} expense={expense.expense} id={expense.id} />)}
+  {data.map(expense => <TableRow amount={expense.amount} expense={expense.expense} id={expense.id} key={expense.id} />)}
   </tbody>
 </table>
   )

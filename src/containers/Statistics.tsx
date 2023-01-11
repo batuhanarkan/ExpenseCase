@@ -1,57 +1,36 @@
 import React from 'react'
-import { Line, ResponsiveLine } from '@nivo/line'
+import { useExpense } from '../providers/ExpenseProvider'
+import { Area, AreaChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
 
 const Statistics = () => {
+  const { data } = useExpense()
   return (
-    <div className='absolute bg-purple '>
-        <Line
-        data={data}
-        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-        xScale={{ type: 'point' }}
-        yScale={{
-            type: 'linear',
-            min: 'auto',
-            max: 'auto',
-            stacked: true,
-            reverse: false
-        }}
-        yFormat=" >-.2f"
-        width={1400}
-        height={400}
-        
-        pointSize={10}
-        pointColor={{ theme: 'background' }}
-        pointBorderWidth={2}
-        pointBorderColor={{ from: 'serieColor' }}
-        pointLabelYOffset={-12}
-        useMesh={true}
-        legends={[
-            {
-                anchor: 'bottom-right',
-                direction: 'column',
-                justify: false,
-                translateX: 100,
-                translateY: 0,
-                itemsSpacing: 0,
-                itemDirection: 'left-to-right',
-                itemWidth: 80,
-                itemHeight: 20,
-                itemOpacity: 0.75,
-                symbolSize: 12,
-                symbolShape: 'circle',
-                symbolBorderColor: 'rgba(0, 0, 0, .5)',
-                effects: [
-                    {
-                        on: 'hover',
-                        style: {
-                            itemBackground: 'rgba(0, 0, 0, .03)',
-                            itemOpacity: 1
-                        }
-                    }
-                ]
+    <div className='absolute bg-white inset-0 flex items-center justify-center '>
+      <div className='w-3/5 h-2/4'>
+        <LineChart width={730} height={250} data={
+          data
+          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+          .reduce((acc, e) => {
+            const last = acc[acc.length - 1]
+            if (last && last.date === e.date) {
+              last.amount += e.amount
+            } else {
+              acc.push({ date: e.date, amount: e.amount })
             }
-        ]}
-    />
+            return acc
+          },[] as { date: string, amount: number }[])
+          .map(e => ({ name: e.date, uv: e.amount, pv: 2400, amt: 2400 }))}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+
+          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+        </LineChart>
+      </div>
+
     </div>
   )
 }
@@ -60,46 +39,3 @@ export default Statistics
 
 
 
-const data = [
-    {
-      "id": "japan",
-      "color": "hsl(70, 70%, 50%)",
-      "data": [
-        {
-          "x": "plane",
-          "y": 136
-        },
-        {
-          "x": "helicopter",
-          "y": 198
-        },
-        {
-          "x": "boat",
-          "y": 176
-        },
-        {
-          "x": "train",
-          "y": 157
-        },
-        {
-          "x": "subway",
-          "y": 104
-        },
-        {
-          "x": "bus",
-          "y": 281
-        },
-        {
-          "x": "car",
-          "y": 263
-        },
-        {
-          "x": "moto",
-          "y": 133
-        },
-        {
-          "x": "bicycle",
-          "y": 104
-        }]
-    }
-]
