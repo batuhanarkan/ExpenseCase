@@ -6,23 +6,26 @@ import ExpenseList from './components/ExpenseList'
 import Header from './components/Header'
 import ExpenseBar from './components/ExpenseBar'
 import ExpenseProvider, { useExpense } from './providers/ExpenseProvider'
+import { Route, Routes } from 'react-router-dom'
+import Root from './containers/Root'
+import Statistics from './containers/Statistics'
+import Homepage from './containers/Homepage'
 
 function App() {
   const [count, setCount] = useState(0)
   const test = useExpense()
   return (
-    
-      <div className="absolute inset-0 grid grid-cols-2">
-        <Header />
-        <ExpenseEntrance />
-        <ExpenseList />
-        <div className='col-span-2 grid grid-cols-3 bg-white h-auto'>
-        <ExpenseBar label="Income" value={test.income} />
-        <ExpenseBar label="Expense" value={-test.expense}/>
-        <ExpenseBar label="Balance" colored={true} value={test.balance}/>
-        </div>
-      </div>
-    
+    <Routes>
+      <Route path='/' element={<Root />}>
+        <Route index element={
+          <Homepage />
+          } />
+          <Route path='statistics' element={
+            <Statistics/>
+          } />
+
+      </Route>
+    </Routes>
 
   )
 }
